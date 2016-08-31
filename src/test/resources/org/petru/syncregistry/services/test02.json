@@ -1,0 +1,9 @@
+{
+ "requestPayload":{
+    "firstSystemId":"Alfresco",
+	"firstSystemItem":"folderA"
+},
+ "responsePayload":{
+  "message": "Registered sync definition for Alfresco:folderA <-> null:null"
+}
+}
