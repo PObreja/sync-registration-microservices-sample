@@ -1,0 +1,11 @@
+{
+ "requestPayload":{
+    "firstSystemId":"Alfresco",
+	"firstSystemItem":"folderA",
+	"secondSystemId":"Box",
+	"secondSystemItem":"folderB"
+},
+ "responsePayload":{
+  "message": "Registered sync definition for Alfresco:folderA <-> Box:folderB"
+}
+}

@@ -1,4 +1,4 @@
-package org.petru.syncregitry.services;
+package org.petru.syncregistry.services;
 
 public class ResponseMessage {
 	private String message;

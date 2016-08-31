@@ -1,4 +1,4 @@
-package org.petru.syncregitry.services;
+package org.petru.syncregistry.services;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

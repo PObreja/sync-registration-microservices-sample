@@ -1,4 +1,4 @@
-package org.petru.syncregitry.services;
+package org.petru.syncregistry.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
