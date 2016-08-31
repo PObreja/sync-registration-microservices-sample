@@ -5,8 +5,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -23,6 +24,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
@@ -39,6 +43,8 @@ public class SyncRegistryControllerIT {
 
 	@Value("${local.server.port}")
 	int port;
+
+	private static String pathToTestFiles = "org/petru/syncregistry/services/";
 
 	private URL base;
 	private RestTemplate template;
@@ -57,6 +63,7 @@ public class SyncRegistryControllerIT {
 	public void setUp() throws Exception {
 		this.base = new URL("http://localhost:" + port + "/");
 		template = new TestRestTemplate();
+
 		initTestData();
 	}
 
@@ -65,34 +72,28 @@ public class SyncRegistryControllerIT {
 	}
 
 	@Parameterized.Parameters
-	public static Collection parameters() {
-		return Arrays.asList(new Object[][] { { "test01.json" },
-				{ "test02.json" } });
+	public static Collection<String> parameters() throws IOException {
+		List<String> fileNames = new ArrayList<String>();
+		ClassLoader cl = SyncRegistryControllerIT.class.getClassLoader();
+		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(
+				cl);
+		Resource[] resources = resolver
+				.getResources(pathToTestFiles + "*.json");
+		for (Resource resource : resources) {
+			fileNames.add(resource.getFilename());
+		}
+		return fileNames;
 	}
 
 	private void initTestData() throws IOException {
-		// Read in our JSON representation
-		String json = IOUtils.toString(
-				this.getClass()
-						.getClassLoader()
-						.getResourceAsStream(
-								"org/petru/syncregistry/services/" + testFile),
-				"UTF-8");
+		String json = IOUtils.toString(this.getClass().getClassLoader()
+				.getResourceAsStream(pathToTestFiles + testFile), "UTF-8");
 		testData = JsonMarshalling.unmarshalling(json, TestData.class);
 	}
 
 	@Test
 	public void testPost() {
 		logger.debug("SyncRegistryControllerIT - POST");
-		SyncRegistryDefinition definition = new SyncRegistryDefinition();
-		String firstSystemId = "1stSystem";
-		String firstSystemItem = "1stSystemItem";
-		String secondSystemId = "2ndSystem";
-		String secondSystemItem = "2ndSystemItem";
-		definition.setFirstSystemId(firstSystemId);
-		definition.setFirstSystemItem(firstSystemItem);
-		definition.setSecondSystemId(secondSystemId);
-		definition.setSecondSystemItem(secondSystemItem);
 
 		ResponseEntity<ResponseMessage> response = template.postForEntity(base
 				+ "syncregistry/", testData.getRequestPayload(),
