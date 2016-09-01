@@ -6,7 +6,7 @@
  "responsePayload":{
   "message": "Registered sync definition for Alfresco:folderA <-> null:null"
 },
-  "statusPayload":{
-    "status": "200"
+  "responseStatus":{
+    "code": "200"
   }
 }

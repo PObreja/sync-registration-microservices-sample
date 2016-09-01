@@ -10,8 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -27,7 +25,6 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
@@ -38,9 +35,6 @@ import org.springframework.web.client.RestTemplate;
 @WebIntegrationTest(randomPort = true)
 public class SyncRegistryControllerIT {
 
-	private static final Log logger = LogFactory
-			.getLog(SyncRegistryControllerIT.class);
-
 	@Value("${local.server.port}")
 	int port;
 
@@ -50,7 +44,6 @@ public class SyncRegistryControllerIT {
 	private RestTemplate template;
 
 	private TestData testData;
-
 	private String testFile;
 
 	@ClassRule
@@ -74,9 +67,10 @@ public class SyncRegistryControllerIT {
 	@Parameterized.Parameters
 	public static Collection<String> parameters() throws IOException {
 		List<String> fileNames = new ArrayList<String>();
-		ClassLoader cl = SyncRegistryControllerIT.class.getClassLoader();
+		ClassLoader classloader = SyncRegistryControllerIT.class
+				.getClassLoader();
 		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(
-				cl);
+				classloader);
 		Resource[] resources = resolver
 				.getResources(pathToTestFiles + "*.json");
 		for (Resource resource : resources) {
@@ -91,22 +85,32 @@ public class SyncRegistryControllerIT {
 		testData = JsonMarshalling.unmarshalling(json, TestData.class);
 	}
 
-	@Test
-	public void testPost() {
-		logger.debug("SyncRegistryControllerIT - POST");
-
-		ResponseEntity<ResponseMessage> response = template.postForEntity(base
-				+ "syncregistry/", testData.getRequestPayload(),
-				ResponseMessage.class);
-
-
-		HttpStatus httpStatus = response.getStatusCode();
-		assertEquals(HttpStatus.OK.toString(), testData.getStatusPayload().getStatus());
-
-
+	private void validateResponsePayload(
+			ResponseEntity<ResponseMessage> response) {
 		ResponseMessage responseMessage = response.getBody();
 		assertNotNull(responseMessage);
 		assertEquals(testData.getResponsePayload().getMessage(),
 				responseMessage.getMessage());
+	}
+
+	private void validateResponseStatus(ResponseEntity<ResponseMessage> response) {
+		assertEquals(response.getStatusCode().value(), testData
+				.getResponseStatus().getCode());
+	}
+
+	private ResponseEntity<ResponseMessage> postRequest() {
+		ResponseEntity<ResponseMessage> response = template.postForEntity(base
+				+ "syncregistry/", testData.getRequestPayload(),
+				ResponseMessage.class);
+		return response;
+	}
+
+	@Test
+	public void testPost() {
+		ResponseEntity<ResponseMessage> response = postRequest();
+
+		validateResponseStatus(response);
+
+		validateResponsePayload(response);
 	}
 }

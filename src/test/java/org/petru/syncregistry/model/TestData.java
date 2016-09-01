@@ -1,14 +1,13 @@
 package org.petru.syncregistry.model;
 
 import org.petru.syncregistry.services.ResponseMessage;
-import org.petru.syncregistry.services.StatusMessage;
 import org.petru.syncregistry.services.SyncRegistryDefinition;
 
 public class TestData {
 
 	private SyncRegistryDefinition requestPayload;
 	private ResponseMessage responsePayload;
-    private StatusMessage statusPayload;
+	private ResponseStatus responseStatus;
 
 	public SyncRegistryDefinition getRequestPayload() {
 		return requestPayload;
@@ -26,9 +25,12 @@ public class TestData {
 		this.responsePayload = responsePayload;
 	}
 
-	public StatusMessage getStatusPayload() { return  statusPayload; }
+	public ResponseStatus getResponseStatus() {
+		return responseStatus;
+	}
 
-	public void setStatusPayload(StatusMessage statusPayload) { this.statusPayload = statusPayload; }
-
+	public void setResponseStatus(ResponseStatus responseStatus) {
+		this.responseStatus = responseStatus;
+	}
 
 }
