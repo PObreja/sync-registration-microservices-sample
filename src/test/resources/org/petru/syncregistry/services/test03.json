@@ -2,5 +2,8 @@
  "requestPayload":{},
  "responsePayload":{
   "message": "Registered sync definition for null:null <-> null:null"
-}
+},
+ "responseStatus":{
+  "code": "200"
+ }
 }
