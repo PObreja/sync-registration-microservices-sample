@@ -13,6 +13,10 @@
         <artifactId>spring-cloud-starter-parent</artifactId>
         <version>Brixton.RELEASE</version>
     </parent>
+	
+	<properties>
+		<dependency.springfox-swagger.version>2.5.0</dependency.springfox-swagger.version>
+	</properties>
 
     <dependencies>
         
@@ -56,6 +60,20 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
+			<scope>test</scope>
+        </dependency>
+		
+		<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${dependency.springfox-swagger.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${dependency.springfox-swagger.version}</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
