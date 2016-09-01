@@ -98,8 +98,12 @@ public class SyncRegistryControllerIT {
 		ResponseEntity<ResponseMessage> response = template.postForEntity(base
 				+ "syncregistry/", testData.getRequestPayload(),
 				ResponseMessage.class);
+
+
 		HttpStatus httpStatus = response.getStatusCode();
-		assertEquals(HttpStatus.OK, httpStatus);
+		assertEquals(HttpStatus.OK.toString(), testData.getStatusPayload().getStatus());
+
+
 		ResponseMessage responseMessage = response.getBody();
 		assertNotNull(responseMessage);
 		assertEquals(testData.getResponsePayload().getMessage(),
