@@ -7,10 +7,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-public class SyncRegitryConfiguration {
+public class SyncRegistryConfiguration
+{
 	private static final Log logger = LogFactory
-			.getLog(SyncRegitryConfiguration.class);
+			.getLog(SyncRegistryConfiguration.class);
 
-	public SyncRegitryConfiguration() {
+	public SyncRegistryConfiguration() {
 	}
 }

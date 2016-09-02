@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SyncRegitryController {
-
-	private static final Log logger = LogFactory
-			.getLog(SyncRegitryController.class);
+public class SyncRegistryController
+{
+	private static final Log logger = LogFactory.getLog(SyncRegistryController.class);
 
 	@RequestMapping(method = RequestMethod.POST, path = "/syncregistry")
 	public ResponseMessage addSyncRegistryDefinition(
@@ -25,5 +24,4 @@ public class SyncRegitryController {
 		logger.info(responseMessage.getMessage());
 		return responseMessage;
 	}
-
 }

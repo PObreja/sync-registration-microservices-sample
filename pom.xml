@@ -76,6 +76,14 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.fitnesse/fitnesse -->
+        <dependency>
+            <groupId>org.fitnesse</groupId>
+            <artifactId>fitnesse</artifactId>
+            <version>20160618</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
