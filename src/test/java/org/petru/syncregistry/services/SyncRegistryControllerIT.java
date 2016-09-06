@@ -31,7 +31,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.web.client.RestTemplate;
 
 @RunWith(Parameterized.class)
-@SpringApplicationConfiguration(classes = SyncRegitryServer.class)
+@SpringApplicationConfiguration(classes = SyncRegistryServer.class)
 @WebIntegrationTest(randomPort = true)
 public class SyncRegistryControllerIT {
 

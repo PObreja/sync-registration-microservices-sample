@@ -1,5 +1,6 @@
 package org.petru.syncregistry.services;
 
+import org.petru.syncregistry.services.messaging.MessagingConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -14,14 +15,15 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableAutoConfiguration
-@Import(SyncRegistryConfiguration.class)
+@Import({ SyncRegistryConfiguration.class, MessagingConfiguration.class })
 @EnableSwagger2
-public class SyncRegitryServer {
+public class SyncRegistryServer
+{
 
 	public static void main(String[] args) {
 		System.setProperty("spring.config.name", "sync-registry-server");
 
-		SpringApplication.run(SyncRegitryServer.class, args);
+		SpringApplication.run(SyncRegistryServer.class, args);
 	}
 
 	@Bean
