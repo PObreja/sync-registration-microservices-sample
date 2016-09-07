@@ -35,11 +35,4 @@ public class SyncRegistryController
 		messageProducer.send(definition);
 		return responseMessage;
 	}
-
-	@RequestMapping(method = RequestMethod.GET, path = "/que") public Integer getQueSize()
-	{
-		SedaEndpoint sedaEndpoint = (SedaEndpoint) springCamelContext
-			.getEndpoint("seda:integrations");
-		return sedaEndpoint.getCurrentQueueSize();
-	}
 }
