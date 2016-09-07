@@ -13,10 +13,13 @@ import org.springframework.stereotype.Component;
     @Autowired
     SyncRegistryDefinitionProcessor syncRegistryDefinitionProcessor;
 
+    @Autowired
+    MessagingConfiguration messagingConfiguration;
+
     @Override public void configure() throws Exception
     {
-        from(MessagingConfiguration.FROM)
+        from(messagingConfiguration.START_ENDPOINT)
             .process(syncRegistryDefinitionProcessor)
-            .to(MessagingConfiguration.TO);
+            .to(messagingConfiguration.QUEUE_ENDOINT);
     }
 }

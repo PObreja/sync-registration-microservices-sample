@@ -1,6 +1,9 @@
 package org.petru.syncregistry.services;
 
-public class SyncRegistryDefinition {
+import java.io.Serializable;
+
+public class SyncRegistryDefinition implements Serializable
+{
 	private String firstSystemId;
 	private String firstSystemItem;
 	private String secondSystemId;

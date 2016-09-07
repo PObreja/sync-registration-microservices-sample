@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.camel.component.seda.SedaEndpoint;
+import org.apache.camel.spring.SpringCamelContext;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -18,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.petru.syncregistry.model.TestData;
 import org.petru.syncregistry.util.JsonMarshalling;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
@@ -26,6 +29,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.web.client.RestTemplate;
@@ -33,6 +37,7 @@ import org.springframework.web.client.RestTemplate;
 @RunWith(Parameterized.class)
 @SpringApplicationConfiguration(classes = SyncRegistryServer.class)
 @WebIntegrationTest(randomPort = true)
+@TestPropertySource(locations = "classpath:test.properties")
 public class SyncRegistryControllerIT {
 
 	@Value("${local.server.port}")
@@ -46,6 +51,9 @@ public class SyncRegistryControllerIT {
 	private TestData testData;
 	private String testFile;
 
+	@Autowired
+	SpringCamelContext springCamelContext;
+
 	@ClassRule
 	public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
 
@@ -54,6 +62,8 @@ public class SyncRegistryControllerIT {
 
 	@Before
 	public void setUp() throws Exception {
+		System.out.println("PORT: " + port);
+
 		this.base = new URL("http://localhost:" + port + "/");
 		template = new TestRestTemplate();
 
@@ -112,5 +122,10 @@ public class SyncRegistryControllerIT {
 		validateResponseStatus(response);
 
 		validateResponsePayload(response);
+
+		// Dummy piece of test-code
+		SedaEndpoint sedaEndpoint = springCamelContext
+			.getEndpoint("seda:integrations", SedaEndpoint.class);
+		System.out.println("QWERTY_SIZE: " + sedaEndpoint.getCurrentQueueSize());
 	}
 }
